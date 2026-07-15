@@ -165,7 +165,7 @@
 <p>直接在搜索框输入关键词或论文标题。RR 会返回相关论文列表。找到 2-3 篇非常切题的论文，勾选。</p>
 
 <p><strong>方式二：导入 Zotero 文献库</strong></p>
-<p>点击 Import from Zotero，RR 会直接读取你的 <a href="https://www.zotero.org/">Zotero</a> 库。你可以选择整个库或特定分类导入。这是最推荐的方式——如果你已经在 Zotero 里积累了 20 篇核心文献，一键导入就能作为种子集。</p>
+<p>点击 Import from Zotero，RR 会直接读取你的 <a href="https://www.zotero.org/">Zotero</a> 库。导入后，RR 会要求你<strong>逐一确认每篇论文是否匹配到数据库中的正确条目</strong>——它提供候选项，你可以选"这篇是对的"或"这些都不对"。这一步虽然有点繁琐，但确保了搜索的准确性。这是最推荐的方式——如果你已经在 Zotero 里积累了 20 篇核心文献，一键导入就能作为种子集。</p>
 
 <p><strong>方式三：DOI / URL 粘贴</strong></p>
 <p>直接粘贴已知论文的 DOI 或 URL，RR 会精准定位。</p>
@@ -193,12 +193,14 @@
 <p><strong>Similar Work</strong>：类似研究方向（最常用）</p>
 <p><strong>All References</strong>：种子论文引用的全部文献（向后追溯根基）</p>
 <p><strong>All Citations</strong>：引用种子论文的全部文献（向前追踪影响）</p>
-<p><strong>Timeline</strong>：时间线模式，按出版年份梳理演变</p>
+<p><strong>Network / Timeline 视图切换</strong>：右上角可以在 Network（网络图）和 Timeline（时间线）之间切换。Timeline 模式按出版年份排列，方便看清一个研究方向随时间的演变脉络——最早的核心论文在哪年，后续分支又在哪年爆发</p>
 
 <h3>Step 4：交互式探索</h3>
 
 <p><strong>点击任意节点（论文）：</strong></p>
-<p>右侧面板显示摘要、作者、出版信息。你可以：</p>
+<p>右侧面板显示摘要、作者、出版信息。需要留意的是：RR 中显示的论文<strong>不一定都有 PDF 附件</strong>——有些只有元数据。但这不影响发现价值：你可以先收藏到 Collection，同步到 Zotero 后用 "Find Available PDF" 自动搜索全文。</p>
+
+<p>你可以：</p>
 <li><strong>Add Note</strong>：给这篇论文添加笔记</li>
 <li><strong>Save to Collection</strong>：保存到你的分类</li>
 <li><strong>Explore Further</strong>：以这篇论文为新的种子，开始新一轮搜索</li>
@@ -214,7 +216,8 @@
 
 <p>找到有价值的论文后：</p>
 <p><strong>保存到 Collection</strong>：按主题分组。例如 "基础知识"、"方法论对比"、"最新进展"</p>
-<p><strong>导出</strong>：支持导出为 RIS / BibTeX / CSV，可导入到 Zotero 或其他文献管理器</p>
+<p><strong>一键同步回 Zotero</strong>：Collection 中的论文通过 Sync 按钮写回 Zotero，自动填充完整的元数据（标题、作者、期刊、DOI、摘要）。回到 Zotero 后，对没有 PDF 的论文可以右键 → "Find Available PDF" 自动检索全文</p>
+<p><strong>导出</strong>：支持导出为 RIS / BibTeX / CSV，可导入到其他文献管理器</p>
 
 <h2>四、同类工具对比</h2>
 
@@ -253,6 +256,21 @@
 <li>只做一轮搜索就不继续了——真正的价值在 2-3 轮迭代中显现</li>
 <li>忽视了左侧列表中的低被引论文——它们可能代表新兴方向</li>
 
+<h3>完整迭代工作流：从发现到写作的闭环</h3>
+<p>RR 的真正价值不在单次搜索，而在反复迭代。一个经过验证的完整循环是：</p>
+
+<li><strong>RR 发现</strong> → 用一篇种子论文找到 5-10 篇相关文献，收藏到 Collection</li>
+<li><strong>同步到 Zotero</strong> → 一键 Sync，RR 自动将论文元数据写入 Zotero</li>
+<li><strong>补全文稿</strong> → 在 Zotero 中对无 PDF 的论文运行 "Find Available PDF"</li>
+<li><strong>阅读与标注</strong> → 在 Zotero 中阅读 PDF，用 Stoplight 法标注（红=存疑/黄=相关/绿=重要发现）</li>
+<li><strong>导入 Obsidian</strong> → 通过 Zotero Integration 插件将高亮批注导入为文献笔记</li>
+<li><strong>写作中发现缺口</strong> → 写综述时发现某个子问题找不到合适引用</li>
+<li><strong>回到 RR</strong> → 以相关论文为种子重新搜索，找到该方向的最新论文</li>
+<li><strong>重复</strong> → 新的论文又开启下一轮迭代</li>
+</ul>
+
+<p>这个循环确保你的文献库始终跟研究进展同步，不会出现"写了一篇综述才发现漏掉好几篇关键论文"的情况。</p>
+
 <h3>RR+ 付费版的价值</h3>
 <p>RR+ 是 2025 年底推出的付费层，主要增加：</p>
 <p><strong>Advanced Search</strong>：更细粒度的搜索控制，可以按时间、期刊、引用数过滤</p>
@@ -268,9 +286,7 @@
 
 <li>从 "我该搜什么关键词" 变成 "我这篇已知论文的邻居们是谁"</li>
 <li>从线性列表变成网状探索，可以看到论文之间的真实关系</li>
-<li>从一次性搜索变成可回溯的探索路径</li>
-
-<p>把它和 Zotero + Obsidian 串联起来，就是一条完整的：<strong>发现 → 管理 → 精读 → 内化</strong> 文献工作流。</p>
+<li>从一次性搜索变成可回溯的探索路径，配合 Zotero 可以形成一个持续迭代的<strong>发现 → 管理 → 精读 → 内化</strong>循环</li>
 
 <p>> 最值得记住的一句话：RR 不是用来证明你知道什么是相关的，而是用来发现你不知道但应该知道的。</p>
 

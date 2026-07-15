@@ -1,0 +1,6 @@
+# Auto Content Site
+__pycache__/
+*.pyc
+.DS_Store
+.env
+*.egg-info/

@@ -13,7 +13,7 @@ from datetime import datetime, date
 from pathlib import Path
 
 BASE_DIR = Path.home() / "auto-content-site"
-RESEARCH_DIR = Path.home() / "finance-research"
+RESEARCH_DIR = BASE_DIR / "research"
 OUTPUT_DIR = BASE_DIR / "public"
 TEMPLATE = BASE_DIR / "templates" / "base.html"
 SITE_TITLE = "科研提效日报"

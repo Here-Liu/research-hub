@@ -18,8 +18,8 @@ BASE_DIR = SCRIPT_DIR
 RESEARCH_DIR = BASE_DIR / "research"
 OUTPUT_DIR = BASE_DIR / "public"
 TEMPLATE = BASE_DIR / "templates" / "base.html"
-SITE_TITLE = "科研提效日报"
-SITE_DESC = "每日 AI 自动调研一个科研提效工具/工作流，从文献发现到论文写作，全流程加速研究"
+SITE_TITLE = "Research Hub"
+SITE_DESC = "AI 自动生成的研究效率工具指南"
 
 ensure = lambda p: p.mkdir(parents=True, exist_ok=True)
 ensure(OUTPUT_DIR)

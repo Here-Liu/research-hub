@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 Auto Content Site Generator
-- Reads research from ~/finance-research/*.md
+- Reads research from ./research/*.md
 - Generates HTML articles + index page
-- Output to ~/auto-content-site/public/
+- Output to ./public/
 """
 
 import os
@@ -12,7 +12,9 @@ import glob
 from datetime import datetime, date
 from pathlib import Path
 
-BASE_DIR = Path.home() / "auto-content-site"
+# Resolve paths relative to this script's location (works locally and in CI)
+SCRIPT_DIR = Path(__file__).parent.resolve()
+BASE_DIR = SCRIPT_DIR
 RESEARCH_DIR = BASE_DIR / "research"
 OUTPUT_DIR = BASE_DIR / "public"
 TEMPLATE = BASE_DIR / "templates" / "base.html"

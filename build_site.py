@@ -39,10 +39,25 @@ def md_to_html(md_text):
     """Simple markdown to HTML conversion for our structured format."""
     html = ""
     in_list = False
+    in_code = False
     lines = md_text.split("\n")
     i = 0
     while i < len(lines):
         line = lines[i].rstrip()
+        # fenced code block
+        if line.strip().startswith("```"):
+            if not in_code:
+                html += "<pre><code>\n"
+                in_code = True
+            else:
+                html += "</code></pre>\n"
+                in_code = False
+            i += 1
+            continue
+        if in_code:
+            html += line + "\n"
+            i += 1
+            continue
         # Headers
         if line.startswith("### "):
             html += f"<h3>{line[4:]}</h3>\n"

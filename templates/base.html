@@ -85,6 +85,43 @@
             color: var(--muted);
             margin: 16px 0;
         }
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+        .article-content thead {
+            background: #002a22;
+        }
+        .article-content th {
+            color: var(--accent);
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+        .article-content td {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+        }
+        .article-content tr:nth-child(even) {
+            background: #141414;
+        }
+        .article-content pre, .article-content code {
+            background: #111;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+        .article-content code {
+            padding: 2px 6px;
+            font-size: 0.9em;
+        }
+        .article-content pre {
+            padding: 16px;
+            overflow-x: auto;
+            line-height: 1.5;
+            margin: 16px 0;
+        }
         .score-bar {
             display: inline-block;
             height: 8px;

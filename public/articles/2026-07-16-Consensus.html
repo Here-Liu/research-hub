@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consensus 使用指南：AI 科研证据分析工具</title>
-    <meta name="description" content="Consensus 使用指南：AI 科研证据分析工具 它不是又一个论文搜索引擎 传统的 Google Scholar、PubMed 做的是一件事：给你一篇篇的论文。">
+    <title>Consensus 使用指南：AI 文献检索与证据分析工具</title>
+    <meta name="description" content="Consensus 使用指南：AI 文献检索与证据分析工具 它不只是一个论文搜索引擎 传统的 Google Scholar、PubMed 做一件事：给你一篇篇的论文。">
     <style>
         :root {
             --bg: #0f0f0f;
@@ -148,27 +148,34 @@
     
         <header>
             <a href="../index.html" class="back-link">← 返回首页</a>
-            <h1>Consensus 使用指南：AI 科研证据分析工具</h1>
+            <h1>Consensus 使用指南：AI 文献检索与证据分析工具</h1>
             <p style="color:var(--muted);font-size:0.85em;">
                 2026-07-16
             </p>
         </header>
         <div class="article-content">
-            <h1>Consensus 使用指南：AI 科研证据分析工具</h1>
+            <h1>Consensus 使用指南：AI 文献检索与证据分析工具</h1>
 
-<h2>它不是又一个论文搜索引擎</h2>
+<h2>它不只是一个论文搜索引擎</h2>
 
-<p>传统的 Google Scholar、PubMed 做的是一件事：<strong>给你一篇篇的论文</strong>。你搜一个关键词，出来几百篇，自己读标题、筛摘要、判断证据强弱——文献综述的前期工作可以花掉几周。</p>
+<p>传统的 Google Scholar、PubMed 做一件事：<strong>给你一篇篇的论文</strong>。你搜一个关键词，出来几百篇，自己读标题、筛摘要、判断证据强弱——文献综述的前期工作可以花掉几周。</p>
 
-<p>Consensus 做的事情不同：<strong>你问一个研究问题，它在 2.2 亿+ 学术论文数据库中检索相关文献，用 AI 对高相关论文做摘要、分类和综合，告诉你证据指向哪个方向，且关键结论附带来源论文。</strong></p>
+<p>Consensus 做的事情不一样。它有两种核心用法：</p>
+
+<p><strong>用法一：做文献调研和综述。</strong> 像用搜索引擎一样按关键词/主题搜索，但 AI 会自动筛选高相关论文、提取方法学特征、生成摘要和对比表格。适用于文献综述前期搜索、范围界定（scoping review）和系统综述的论文筛选。</p>
+
+<p><strong>用法二：回答具体研究问题。</strong> 问一个有明确答案方向的问题，它在 2.2 亿+ 学术论文中检索，用 AI 对高相关论文做摘要和分类，告诉你证据指向哪个方向——Yes / No / Possibly，且关键结论附带来源论文。</p>
+
+<p>两种用法共用同一数据库，只是入口和输出形态不同：</p>
 
 <pre><code>
-你：Does intermittent fasting improve cognitive function?
-Consensus：
-  ✅ Yes（12 篇支持）
-  ❓ Possibly（5 篇部分支持）
-  ❌ No（3 篇反对）
-  ↓ 每篇附带摘要 + 方法学快照 + 原文链接
+【用法一：文献调研】
+输入：keyboard, chronic pain, ergonomics
+输出：按年份/方法学/期刊排列的论文列表 + Study Snapshots + 可 Deep Search
+
+【用法二：研究问答】
+输入：Does intermittent fasting improve cognitive function?
+输出：Consensus Meter（Yes 12 : Possibly 5 : No 3）+ 每篇证据摘要
 </code></pre>
 
 <p>这不是 ChatGPT 的"我觉得"。这是从真实论文中提取的证据。</p>
@@ -195,6 +202,16 @@ Consensus：
 <p>---</p>
 
 <h2>二、核心特色功能</h2>
+
+<h3>2.0 两种入口，一个数据库</h3>
+
+<p>Consensus 没有"文献综述模式"和"问答模式"的开关——两种用法共用同一个 2.2 亿+ 论文数据库，区别在于你输入什么、得到什么：</p>
+
+<p><strong>做文献调研</strong> → 用关键词/主题搜索，跟用 Google Scholar 一样，但结果页多了 AI 自动提取的方法学标签（Study Snapshots）、筛选器（19 种研究设计）、以及一键 Deep Search 生成综述草稿。你得到一个按相关度/年份/研究方法排列的论文集合。</p>
+
+<p><strong>回答研究问题</strong> → 用自然语言问一个问题，得到 Yes/No/Possibly 的证据分布仪表盘（Consensus Meter），外加每篇支持论文的摘要。</p>
+
+<p>两种用法可以灵活切换：从文献调研中找到核心论文 → 用这些论文去问新问题 → 得到答案后再用 Citation Graph 拓展。</p>
 
 <h3>2.1 Consensus Meter — 证据分布仪表盘</h3>
 
@@ -271,11 +288,14 @@ Consensus：
 <tr><th>类型</th><th>例子</th><th>效果</th></tr>
 </thead>
 <tbody>
+<tr><td><strong>文献调研 / 范围界定综述</strong></td><td>按关键词/主题搜索（如 <code>keyboard ergonomics RSI</code>），用筛选器按年份/方法学分类整理</td><td>⭐⭐⭐⭐⭐</td></tr>
 <tr><td>Yes/No 研究问题</td><td>"Does mindfulness meditation reduce anxiety in college students?"</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td><strong>系统综述前期筛选</strong></td><td>用 Deep Search + Study Snapshots 批量提取论文特征，快速筛出符合纳入标准的论文</td><td>⭐⭐⭐⭐</td></tr>
 <tr><td>PICO 问题</td><td>"In adults with chronic pain, does acupuncture reduce pain more than NSAIDs?"</td><td>⭐⭐⭐⭐⭐</td></tr>
 <tr><td>干预效果</td><td>"Does the Mediterranean diet reduce cardiovascular mortality?"</td><td>⭐⭐⭐⭐</td></tr>
 <tr><td>风险因素</td><td>"Is air pollution linked to cognitive decline?"</td><td>⭐⭐⭐⭐</td></tr>
-<tr><td>研究现状速览</td><td>"What does the literature say about X?"（先用 Consensus Meter）</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>研究现状速览</td><td>"What does the literature say about X?"</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td><strong>更新文献综述</strong></td><td>导入已有 Zotero 库 → 搜索关联新论文 → Chat with Collection 对比新旧发现</td><td>⭐⭐⭐⭐</td></tr>
 </tbody>
 </table>
 
@@ -302,22 +322,17 @@ Consensus：
 
 <p>访问 <a href="https://consensus.app/">consensus.app</a>，免费版有一定搜索额度。Premium 付费版解锁更多功能（学生折扣）。</p>
 
-<h3>Step 1：搜索</h3>
+<h3>Step 1：搜索——文献调研与研究问答</h3>
 
-<p>有三种搜索模式：</p>
+<p>先明确你要做什么：</p>
 
-<table>
-<thead>
-<tr><th>模式</th><th>什么时候用</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>研究问题</strong>（默认）</td><td>问一个具体问题，需要看证据分布</td></tr>
-<tr><td><strong>论文搜索</strong>（Paper Search）</td><td>已经知道要找哪篇论文，直接搜标题/作者</td></tr>
-<tr><td><strong>高级搜索</strong></td><td>需要精确筛选：19 种研究设计 + 44 家出版商 + 人体/动物研究（2026.07 更新）</td></tr>
-</tbody>
-</table>
+<p><strong>做文献调研</strong> → 直接输入关键词，跟用 Google Scholar 一样：<code>machine learning diabetes prediction</code> 或 <code>keyboard ergonomics RSI</code>。结果页返回论文列表，每条附带 Study Snapshots。左侧筛选器按年份/研究设计/出版商细化。适合：文献综述前期搜索、范围界定、系统性检索。</p>
 
-<p>关键词技巧：</p>
+<p><strong>回答研究问题</strong> → 输入一个具体的问题：<code>Does intermittent fasting improve cognitive function?</code>。结果页顶部显示 Consensus Meter 证据分布。适合：验证假设、找证据支撑论点、快速了解学界对一个问题的态度。</p>
+
+<p><strong>找已知论文</strong> → 用 Paper Search（底栏 Tools 下），直接搜标题/作者/DOI，返回论文详情无 AI 干扰。</p>
+
+<p>无论哪种入口，后续都可以用 Copilot 追问、Deep Search 深挖、或加入 Collection 整理。关键词技巧：</p>
 <li>要具体：<code>Does mindfulness meditation reduce anxiety in college students?</code></li>
 <li>加限定：<code>in Chinese population</code>、<code>in older adults</code>、<code>RCT</code></li>
 <li>不要宽泛的开放式问题：<code>Tell me about meditation</code>（效果差）</li>

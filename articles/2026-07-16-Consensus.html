@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consensus 完全指南：AI 文献搜索与证据分析工具</title>
-    <meta name="description" content="Consensus 完全指南：AI 文献搜索与证据分析工具 一、它解决什么问题？ 做文献调研时，你经常遇到这些场景： - 想知道"XX 疗法对 XX 疾病有效吗？"——传统搜索给你一堆论文，你得自己逐篇读摘要找结论 - 写论文时需要引用证据支持某个论点，但不确定有没有最新的研究反驳你的观点 - 刚进入一个新领域，需要快速了解学界对这个问题的"共识"是什...">
+    <title>Consensus 使用指南：AI 科研证据分析工具</title>
+    <meta name="description" content="Consensus 使用指南：AI 科研证据分析工具 它不是又一个论文搜索引擎 传统的 Google Scholar、PubMed 做的是一件事：给你一篇篇的论文。">
     <style>
         :root {
             --bg: #0f0f0f;
@@ -85,6 +85,43 @@
             color: var(--muted);
             margin: 16px 0;
         }
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+        .article-content thead {
+            background: #002a22;
+        }
+        .article-content th {
+            color: var(--accent);
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+        .article-content td {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+        }
+        .article-content tr:nth-child(even) {
+            background: #141414;
+        }
+        .article-content pre, .article-content code {
+            background: #111;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+        .article-content code {
+            padding: 2px 6px;
+            font-size: 0.9em;
+        }
+        .article-content pre {
+            padding: 16px;
+            overflow-x: auto;
+            line-height: 1.5;
+            margin: 16px 0;
+        }
         .score-bar {
             display: inline-block;
             height: 8px;
@@ -111,176 +148,322 @@
     
         <header>
             <a href="../index.html" class="back-link">← 返回首页</a>
-            <h1>Consensus 完全指南：AI 文献搜索与证据分析工具</h1>
+            <h1>Consensus 使用指南：AI 科研证据分析工具</h1>
             <p style="color:var(--muted);font-size:0.85em;">
                 2026-07-16
             </p>
         </header>
         <div class="article-content">
-            <h1>Consensus 完全指南：AI 文献搜索与证据分析工具</h1>
+            <h1>Consensus 使用指南：AI 科研证据分析工具</h1>
 
-<h2>一、它解决什么问题？</h2>
+<h2>它不是又一个论文搜索引擎</h2>
 
-<p>做文献调研时，你经常遇到这些场景：</p>
+<p>传统的 Google Scholar、PubMed 做的是一件事：<strong>给你一篇篇的论文</strong>。你搜一个关键词，出来几百篇，自己读标题、筛摘要、判断证据强弱——文献综述的前期工作可以花掉几周。</p>
 
-<li>想知道"XX 疗法对 XX 疾病有效吗？"——传统搜索给你一堆论文，你得自己逐篇读摘要找结论</li>
-<li>写论文时需要引用证据支持某个论点，但不确定有没有最新的研究反驳你的观点</li>
-<li>刚进入一个新领域，需要快速了解学界对这个问题的"共识"是什么</li>
+<p>Consensus 做的事情不同：<strong>你问一个研究问题，它在 2.2 亿+ 学术论文数据库中检索相关文献，用 AI 对高相关论文做摘要、分类和综合，告诉你证据指向哪个方向，且关键结论附带来源论文。</strong></p>
 
-<p>传统的 Google Scholar 返回的是论文列表，你需要自己读、自己总结、自己判断哪边的证据更强。这个过程极其耗时。</p>
+<pre><code>
+你：Does intermittent fasting improve cognitive function?
+Consensus：
+  ✅ Yes（12 篇支持）
+  ❓ Possibly（5 篇部分支持）
+  ❌ No（3 篇反对）
+  ↓ 每篇附带摘要 + 方法学快照 + 原文链接
+</code></pre>
 
-<p><strong>Consensus</strong> 解决的方式完全不同：你直接问一个问题，它搜索 2.2 亿+ 篇同行评审论文，用 AI 读完后告诉你"答案是 Yes / No / Possibly"，并且给出每篇支持论文的证据摘要。</p>
+<p>这不是 ChatGPT 的"我觉得"。这是从真实论文中提取的证据。</p>
 
-<h2>二、核心原理</h2>
+<p>---</p>
 
-<h3>2.1 不是聊天机器人，是研究助手</h3>
+<h2>一、跟通用 AI 的核心区别</h2>
 
-<p>Consensus 和 ChatGPT、Claude 这类通用 AI 的关键区别在于：</p>
+<table>
+<thead>
+<tr><th></th><th>通用 AI（ChatGPT/Claude）</th><th>Consensus</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>回答基础</strong></td><td>训练数据中的知识，可能过时</td><td>实时检索 2.2 亿+ 学术论文</td></tr>
+<tr><td><strong>引用</strong></td><td>可能编造（幻觉）</td><td>基于真实论文，对 Yes/No 问题生成 Consensus Meter 显示证据方向</td></tr>
+<tr><td><strong>回答形式</strong></td><td>自由生成文本</td><td>证据分布仪表盘 + 论文列表 + 可选的生成式深度分析</td></tr>
+<tr><td><strong>可验证</strong></td><td>难</td><td>每篇论文可跳转原文</td></tr>
+<tr><td><strong>数据库</strong></td><td>训练时的快照</td><td>持续更新的学术数据库</td></tr>
+</tbody>
+</table>
 
-<p><strong>ChatGPT/Claude</strong>：基于训练数据生成回答，可能会"编造"引用（幻觉），引用可能指向不存在的论文</p>
-<p><strong>Consensus</strong>：不生成自由回答，而是<strong>先搜索学术数据库</strong>，找到真实存在的论文，再从论文中提取答案</p>
+<p><strong>ChatGPT 告诉你它"认为"什么，Consensus 告诉你学界"发现"了什么——但后者同样需要你判断证据质量。</strong></p>
 
-<p>它的数据库覆盖 <strong>2.2 亿+</strong> 篇论文，数据来源于 Semantic Scholar、OpenAlex 和网络爬取。</p>
+<p>---</p>
 
-<h3>2.2 核心功能：研究问题问答</h3>
+<h2>二、核心特色功能</h2>
 
-<p>这是 Consensus 最独特的功能。你可以问一个 Yes/No 类型的研究问题，比如：</p>
+<h3>2.1 Consensus Meter — 证据分布仪表盘</h3>
 
-<p>> "Does intermittent fasting improve cognitive function?"</p>
+<p>当你问一个 Yes/No 研究问题，Consensus 会：</p>
 
-<p>Consensus 会返回一个仪表盘：</p>
-<li><strong>Yes</strong> — 支持该结论的论文数量</li>
-<li><strong>No</strong> — 反对该结论的论文数量</li>
-<li><strong>Possibly</strong> — 结论不明确的论文数量</li>
+<li>从全库召回候选论文</li>
+<li>对高相关性结果进行重排和 AI 分析</li>
+<li>按 Yes / Possibly / No 三栏归类</li>
+<li>显示每栏的论文数量</li>
+</ul>
 
-<p>每篇论文都附带摘要和引用链接，你可以一键查看原文。</p>
+<p>你<strong>一眼就能看到学界对该问题的分歧程度</strong>。如果 20:2 指向相对明确；如果 10:12 说明这个领域还在争论中——这本身就是有价值的发现。</p>
 
-<h3>2.3 其他功能</h3>
+<p>> 实操提示：不只盯着 Yes，Possibly 和 No 栏同样重要。点进论文看 Study Snapshots 判断证据等级。</p>
 
-<p><strong>Copilot</strong>：AI 对话模式，可以针对搜索结果追问细节</p>
-<p><strong>Topic Summary</strong>：对某个主题自动生成研究总结</p>
-<p><strong>Paper Analysis</strong>：上传或搜索某篇论文，AI 帮你分析研究方法、样本量、局限性</p>
-<p><strong>Reference Finder</strong>：写作时输入一段话，Consensus 找到支持这段话的学术引用</p>
-<p><strong>Collections</strong>：保存和组织论文到项目文件夹</p>
-<p><strong>Consensus Meter</strong>：可视化展示学界对该问题的共识分布</p>
+<h3>2.2 Study Snapshots — 研究方法快照</h3>
 
-<h2>三、完整实操指南</h2>
+<p>每篇论文展开后直接看到：</p>
+
+<li><strong>Population</strong> — 研究人群</li>
+<li><strong>Study Design</strong> — 研究设计（RCT、Meta-analysis、Cohort 等）</li>
+<li><strong>Outcomes</strong> — 主要结局指标</li>
+<li><strong>Results</strong> — 关键结果</li>
+<li><strong>Sample Size</strong> — 样本量</li>
+
+<p>这是 Consensus 中最实用的论文速览功能之一。不看 PDF 就能了解论文的基本方法学特征（2026 年更新为侧边栏一键查看）。</p>
+
+<h3>2.3 Research Agent — 复杂研究问题（2026 年 5 月上线）</h3>
+
+<p>当问题需要多步推理时——比如"比较间歇性禁食、生酮饮食和地中海饮食对 2 型糖尿病患者的血糖控制效果，考虑成本效益"——Research Agent 会自动：拆解问题 → 规划搜索策略 → 链式调用多个工具 → 返回引证完备的综合回答。不再是简单的 Yes/No，而是结构化的研究简报。</p>
+
+<h3>2.4 Citation Graph — 引用网络（2026 年 2 月上线）</h3>
+
+<p>输入最多 5 篇种子论文，自动绘制引用网络图，支持 20/40/60 篇展开。可以快速定位奠基性研究、追踪后续发展脉络。<strong>在小规模引用网络探索上可承担 Research Rabbit 的部分工作，但 Citation Graph 上限 60 篇，远不及 RR 的全库网络探索能力。</strong></p>
+
+<h3>2.5 Deep Search — 深度分析（2025 年 7 月上线，2026 年 6 月升级）</h3>
+
+<p>对最多 50 篇论文生成长篇分析报告。2026 年 6 月更新后支持：在 Library 和 Collections 内运行、自定义输出格式（PICO/SPIDER 综述、阅读清单、范围界定图谱等）。</p>
+
+<h3>2.6 My Library — 文献库管理</h3>
+
+<p>2025-2026 年持续强化的核心功能：</p>
+
+<li><strong>导入 Zotero</strong>（2026.02 上线）</li>
+<li>上传 PDF（手稿、方案、报告等，私密保存）</li>
+<li>DOI / RIS / BibTeX 导入</li>
+<li>创建 Collections 并按项目组织</li>
+<li><strong>分享 Collections</strong> — 协作者可查看或编辑（2026.06）</li>
+<li><strong>Chat with Collection</strong> — 对整个文献集合提问</li>
+<li>参考文献生成（支持常见引用格式）</li>
+<li>LaTeX 导出（用于 Overleaf）</li>
+
+<h3>2.7 AI 工具集成（MCP / API）</h3>
+
+<p>Consensus 可以通过 MCP（Model Context Protocol）连接到你已有的 AI 工具。目前官方支持的集成包括：</p>
+
+<li><strong>ChatGPT</strong> — 作为 ChatGPT App 调用（2024 年上线 Consensus GPT，2026 年升级为 App 连接）</li>
+<li><strong>Claude / Claude Code</strong> — 通过 MCP 直接在对话中搜索文献</li>
+<li><strong>Codex</strong> — 在 Codex CLI 中调用</li>
+<li><strong>自定义工具</strong> — 通过 Consensus API 构建</li>
+
+<p>这些集成让你的研究助手可以直接获取学术文献，不需要切到浏览器搜索。</p>
+
+<p>---</p>
+
+<h2>三、适合什么，不适合什么</h2>
+
+<p>Consensus 不是万能工具。了解它的边界和正确使用它的方式同样重要。</p>
+
+<h3>适合的问题类型</h3>
+
+<table>
+<thead>
+<tr><th>类型</th><th>例子</th><th>效果</th></tr>
+</thead>
+<tbody>
+<tr><td>Yes/No 研究问题</td><td>"Does mindfulness meditation reduce anxiety in college students?"</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td>PICO 问题</td><td>"In adults with chronic pain, does acupuncture reduce pain more than NSAIDs?"</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td>干预效果</td><td>"Does the Mediterranean diet reduce cardiovascular mortality?"</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>风险因素</td><td>"Is air pollution linked to cognitive decline?"</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>研究现状速览</td><td>"What does the literature say about X?"（先用 Consensus Meter）</td><td>⭐⭐⭐⭐</td></tr>
+</tbody>
+</table>
+
+<h3>不适合的问题类型</h3>
+
+<table>
+<thead>
+<tr><th>类型</th><th>原因</th></tr>
+</thead>
+<tbody>
+<tr><td>开放式理论问题</td><td>"What is consciousness?" — 太宽泛，数据库无法精确定位</td></tr>
+<tr><td>非英文文献</td><td>Consensus 以英文论文为主，中文、日文等覆盖有限</td></tr>
+<tr><td>灰色文献</td><td>政策文件、技术报告、学位论文等未经同行评审的内容覆盖不足</td></tr>
+<tr><td>最新预印本</td><td>未经同行评审的论文可能未被收录</td></tr>
+<tr><td>具体数字查询</td><td>"What was the exact sample size in Smith et al. 2020?" — 问一篇具体论文时用 Ask Paper 更好</td></tr>
+</tbody>
+</table>
+
+<p>---</p>
+
+<h2>四、完整实操指南</h2>
 
 <h3>Step 0：注册</h3>
 
-<p>访问 <a href="https://consensus.app/">consensus.app</a>，注册免费账号。免费版每天有一定次数的搜索额度。如果需要更多，有 Premium 付费版（学生折扣）。</p>
+<p>访问 <a href="https://consensus.app/">consensus.app</a>，免费版有一定搜索额度。Premium 付费版解锁更多功能（学生折扣）。</p>
 
-<h3>Step 1：提出研究问题</h3>
+<h3>Step 1：搜索</h3>
 
-<p>在搜索框输入一个具体的研究问题。关键技巧：</p>
-
-<p><strong>要具体</strong>：不要问"Does diet affect health?"，太宽泛了</p>
-<p><strong>要可回答</strong>：最好是 Yes/No 类型的问题</p>
-<p><strong>好的例子</strong>："Does mindfulness meditation reduce anxiety in college students?"</p>
-<p><strong>差的例子</strong>："Tell me about meditation"</p>
-
-<h3>Step 2：阅读 Consensus Meter</h3>
-
-<p>搜索结果页顶部是一个共识仪表盘，分为三栏：</p>
+<p>有三种搜索模式：</p>
 
 <table>
 <thead>
-<tr><th>Yes</th><th>Possibly</th><th>No</th></tr>
+<tr><th>模式</th><th>什么时候用</th></tr>
 </thead>
 <tbody>
-<tr><td>12 篇支持</td><td>5 篇部分支持</td><td>3 篇反对</td></tr>
+<tr><td><strong>研究问题</strong>（默认）</td><td>问一个具体问题，需要看证据分布</td></tr>
+<tr><td><strong>论文搜索</strong>（Paper Search）</td><td>已经知道要找哪篇论文，直接搜标题/作者</td></tr>
+<tr><td><strong>高级搜索</strong></td><td>需要精确筛选：19 种研究设计 + 44 家出版商 + 人体/动物研究（2026.07 更新）</td></tr>
 </tbody>
 </table>
 
-<p>每栏下面是论文列表，显示：</p>
-<li>论文标题和作者</li>
-<li>发表年份和期刊</li>
-<li>一句话摘要（AI 从论文中提取的对该问题的结论）</li>
-<li>"Study Snapshots" 按钮（展开研究方法、样本量等详情）</li>
+<p>关键词技巧：</p>
+<li>要具体：<code>Does mindfulness meditation reduce anxiety in college students?</code></li>
+<li>加限定：<code>in Chinese population</code>、<code>in older adults</code>、<code>RCT</code></li>
+<li>不要宽泛的开放式问题：<code>Tell me about meditation</code>（效果差）</li>
+
+<h3>Step 2：读 Consensus Meter</h3>
+
+<p>三栏比例比绝对数量重要：</p>
+
+<li>Yes 明显多于 No → 学界相对一致的结论</li>
+<li>Yes ≈ No → 有争议，需要你自己判断双方证据质量</li>
+<li>Possibly 占比大 → 证据不充分或研究异质性高</li>
 
 <h3>Step 3：筛选和深入</h3>
 
-<p>使用左侧筛选器：</p>
-<li>按发表年份范围筛选（只看近 5 年）</li>
-<li>按研究方法筛选（RCT、Meta-analysis、Observational 等）</li>
-<li>按期刊/领域筛选</li>
-<li>按被引次数排序</li>
+<p>左侧筛选栏：年份 / 19 种研究设计 / 44 家出版商 / 人体或动物研究 / 被引次数排序。</p>
 
-<p>找到感兴趣的论文后：</p>
-<li>点击标题查看完整摘要</li>
-<li>点击 "Open PDF" 跳转到原文</li>
-<li>点击 "Cite" 导出引用格式（APA、MLA 等）</li>
+<p>找到感兴趣的论文后：<strong>Study Snapshots</strong> → 看方法学特征 → <strong>Open PDF</strong> → 读原文（能否看全文取决于出版商开放权限和机构订阅；Consensus 的全文索引主要用于 AI 分析，不等于全文阅读授权）。</p>
 
-<h3>Step 4：使用 Copilot 深入探索</h3>
+<h3>Step 4：分析模式</h3>
 
-<p>点击 "Copilot" 进入对话模式。你可以：</p>
+<li><strong>Ask Paper</strong> — 对单篇论文提问，AI 基于全文回答</li>
+<li><strong>Chat with Papers</strong> — 同时和最多 5 篇论文对话，对比方法和结论</li>
+<li><strong>Copilot / Threads</strong> — 对话式追问：</li>
+<li>追问细节："What were the sample sizes?"</li>
+<li>对比研究："How do RCT results differ from observational studies?"</li>
+<li>找矛盾："Which studies oppose this conclusion and why?"</li>
+<li>扩展问题："What about effects on elderly populations?"</li>
 
-<p><strong>追问细节</strong>："What were the sample sizes in these studies?"</p>
-<p><strong>对比研究</strong>："How do the RCT results differ from observational studies?"</p>
-<p><strong>找矛盾</strong>："Which studies oppose this conclusion and why?"</p>
-<p><strong>扩展问题</strong>："What about the effects on elderly populations?"</p>
+<h3>Step 5：用 Research Agent 做复杂分析</h3>
 
-<p>Copilot 的回答都基于数据库中的真实论文，不会自由发挥。</p>
+<p>当问题需要多步推理时，启动 Research Agent 比逐条搜索效率高得多。</p>
 
-<h3>Step 5：保存到 Collection</h3>
+<h3>Step 6：用 Citation Graph 拓展文献</h3>
 
-<li>创建项目文件夹，比如"论文文献综述"、"开题报告参考"</li>
-<li>把相关的论文拖入 Collection</li>
-<li>导出 Collection 为 CSV 或 RIS 格式，导入到 Zotero</li>
+<p>找 3-5 篇核心论文 → 展开引用网络 → 发现相关文献 → 加入 Collection。</p>
 
-<h2>四、同类工具对比</h2>
+<h3>Step 7：保存到 My Library</h3>
+
+<p>导入 Zotero / 上传 PDF → 创建 Collection → 导出引用 → 分享协作。</p>
+
+<p>---</p>
+
+<h2>五、工作流推荐</h2>
+
+<h3>场景一：快速验证一个研究问题</h3>
+
+<pre><code>
+Consensus Meter → 看证据分布 → Study Snapshots 检查方法学 → 读关键论文原文
+（10-15 分钟，适合写作中引证或快速了解一个陌生问题）
+</code></pre>
+
+<h3>场景二：做系统综述前期筛选</h3>
+
+<pre><code>
+Research Agent 初探 → Deep Search 深度分析 → Citation Graph 拓展
+→ My Library 整理 → Chat with Collection 综合验证
+（几天的工作压缩到几小时，但**不能替代人工精读和证据质量评估**）
+</code></pre>
+
+<h3>场景三：分析已有文献库</h3>
+
+<pre><code>
+导入 Zotero → 在 My Library 中搜索 → Chat with Collection → 生成引用
+（适合已有大量文献收集，需要快速梳理的研究阶段）
+</code></pre>
+
+<p>---</p>
+
+<h2>六、学术诚信与注意事项</h2>
+
+<h3>Consensus 的定位</h3>
+
+<p>Consensus 加速的是文献综述中<strong>前几个环节</strong>：搜索 → 筛选 → 分类 → 初读。</p>
+
+<p><strong>仍需人工完成</strong>：精读 → 方法学评估 → 综合 → 撰写。</p>
+
+<h3>必须注意的五个坑</h3>
+
+<li><strong>AI 提取可能有偏差</strong> — 引用真实，但 AI 对论文结论的提取不一定 100% 准确。关键论文必须读原文。</li>
+<li><strong>不自动区分证据等级</strong> — 一篇 RCT 和一篇病例报告在 Consensus 中权重相同。你需要自己判断。</li>
+<li><strong>数据库不完整</strong> — 2.2 亿篇很多，但非英文文献、灰色文献、最新预印本可能缺失。</li>
+<li><strong>免费版有额度限制</strong> — 大量搜索需 Premium 或机构订阅。</li>
+<li><strong>不替换人工判断</strong> — 举个例子：Consensus 不会告诉你一篇论文的 funding source 是谁，而这可能影响结果的可信度。</li>
+</ul>
+
+<h3>证据质量自检清单</h3>
+
+<p>拿到 Consensus 给出的论文后，建议逐个问自己：</p>
+
+<li>[ ] 研究设计是什么？RCT → Meta-analysis → Cohort → Case-control → Case report（大致按证据等级排列）</li>
+<li>[ ] 样本量够吗？小样本的阳性结果可能是偶然</li>
+<li>[ ] 效应量和置信区间如何？区间太宽说明精度不够</li>
+<li>[ ] 有没有已知混杂因素未被控制？</li>
+<li>[ ] 这篇论文的发表时间是否还相关？</li>
+<li>[ ] 资助方是谁？有没有利益冲突嫌疑？</li>
+
+<p>---</p>
+
+<h2>七、2026 年版特性总览</h2>
 
 <table>
 <thead>
-<tr><th>特性</th><th>Consensus</th><th>Research Rabbit</th><th>Elicit</th><th>关键词搜索</th></tr>
+<tr><th>功能</th><th>上线时间</th><th>一句话</th><th>付费墙</th></tr>
 </thead>
 <tbody>
-<tr><td>核心能力</td><td>研究问题问答</td><td>引用网络发现</td><td>论文筛选与提取</td><td>关键词匹配</td></tr>
-<tr><td>搜索方式</td><td>自然语言问题</td><td>种子论文</td><td>关键词/问题</td><td>关键词</td></tr>
-<tr><td>数据库</td><td>2.2 亿篇</td><td>2.7 亿篇</td><td>1.2 亿篇</td><td>依平台</td></tr>
-<tr><td>答案形式</td><td>Yes/No/证据摘要</td><td>图谱可视化</td><td>表格提取</td><td>列表</td></tr>
-<tr><td>引用溯源</td><td>✅ 每句有引用</td><td>✅ 论文关联</td><td>✅ 表格 + 引用</td><td>❌</td></tr>
-<tr><td>免费版</td><td>✅ 有限搜索/天</td><td>✅ 完全免费</td><td>✅ 有限</td><td>✅ 完全免费</td></tr>
-<tr><td>Zotero 集成</td><td>❌</td><td>✅</td><td>❌</td><td>手动</td></tr>
+<tr><td>Consensus Meter</td><td>2024.01</td><td>证据分布仪表盘</td><td>免费</td></tr>
+<tr><td>Study Snapshots</td><td>2024</td><td>研究方法速览</td><td>免费+</td></tr>
+<tr><td>Copilot / Threads</td><td>2024.02</td><td>对话式追问</td><td>付费</td></tr>
+<tr><td>Ask Paper</td><td>2024.09</td><td>对单篇论文提问</td><td>付费</td></tr>
+<tr><td>Deep Search</td><td>2025.07</td><td>50 篇论文深度分析</td><td>付费</td></tr>
+<tr><td>Medical Mode</td><td>2025.10</td><td>临床研究专用模式</td><td>付费</td></tr>
+<tr><td>My Library</td><td>2026.01</td><td>文献库管理</td><td>免费+</td></tr>
+<tr><td>Zotero 导入</td><td>2026.02</td><td>直接导入 Zotero</td><td>免费</td></tr>
+<tr><td>Citation Graph</td><td>2026.02</td><td>引用网络可视化</td><td>付费</td></tr>
+<tr><td>MCP 集成</td><td>2026.03</td><td>接入 Claude/ChatGPT</td><td>免费</td></tr>
+<tr><td>Research Agent</td><td>2026.05</td><td>多步复杂研究问题</td><td>付费</td></tr>
+<tr><td>全文索引</td><td>2026.05</td><td>主要出版商全文接入 AI 分析</td><td>机构订阅</td></tr>
+<tr><td>19 种研究设计筛选</td><td>2026.07</td><td>精细方法学筛选</td><td>免费</td></tr>
+<tr><td>44 家出版商筛选</td><td>2026.07</td><td>按出版商过滤</td><td>免费</td></tr>
+<tr><td>Collection 分享</td><td>2026.06</td><td>协作文献管理</td><td>付费</td></tr>
 </tbody>
 </table>
 
-<h3>选型建议</h3>
+<p>> 注：上线时间为根据 Consensus 产品更新记录整理。</p>
 
-<li><strong>快速验证一个研究问题</strong> → Consensus（直接问 Yes/No，看证据分布）</li>
-<li><strong>做文献综述、找全相关论文</strong> → Research Rabbit（从种子论文出发，引用网络扩散）</li>
-<li><strong>提取论文中的关键数据</strong> → Elicit（表格化提取方法、样本量等）</li>
-<li><strong>日常搜索</strong> → 三者互补：Consensus 问问题 → RR 找全文献 → Elicit 提取数据</li>
+<p>---</p>
 
-<h2>五、实用技巧与注意事项</h2>
+<h2>八、总结</h2>
 
-<h3>提问技巧</h3>
-<li>用 Yes/No 问句格式，Consensus 的效果最好</li>
-<li>加上人群限定词："in older adults"、"in Chinese population" 等</li>
-<li>如果结果太少，放宽问题范围；结果太多，增加限定条件</li>
-<li>用 Copilot 模式处理开放式问题（"What are the key factors..."）</li>
+<p>Consensus 的独特价值不在于帮你"找论文"——很多工具都能做到。它的价值在于帮你<strong>理解证据的分布和方向</strong>。它把文献综述中最耗时的一部分——读大量摘要、对比各方观点、判断学界共识——压缩到几分钟。</p>
 
-<h3>常见误区</h3>
-<li><strong>把 Consensus 当通用 AI 用</strong> — 不要问它"写一篇论文"，它不擅长自由生成</li>
-<li><strong>只看 Yes 栏</strong> — 学术研究中有争议是常态，Possibly 和 No 栏同样有价值</li>
-<li><strong>不验证引用</strong> — 虽然 Consensus 的引用是真实的，但 AI 提取的摘要可能有偏差，关键论文还是要去读原文</li>
-<li><strong>忽略研究方法</strong> — 一篇 RCT 和一篇回顾性研究的证据等级不同，Consensus 不会自动区分，需要你自己判断</li>
-
-<h3>和 Research Rabbit 搭配使用</h3>
-
-<p>两者互补性很强：</p>
-
-<li><strong>先 Consensus</strong>：快速了解一个研究问题，找到 5-10 篇核心论文</li>
-<li><strong>再到 RR</strong>：用这些核心论文做种子，通过引用网络发现更多相关文献</li>
-<li><strong>回 Consensus</strong>：用新发现的问题再去问，验证自己的研究方向</li>
-</ul>
-
-<h2>六、总结</h2>
-
-<p>Consensus 的独特价值不是帮你"找论文"——Paper 在这一点上做得更好——而是帮你<strong>理解论文的证据指向</strong>。它把文献综述中最耗时的一部分（读几十篇摘要、对比各方观点）压缩成几分钟。</p>
+<p>2025-2026 年之间，Consensus 从一个搜索工具扩展为包含文献管理（My Library）、引用网络（Citation Graph）、复杂分析（Research Agent / Deep Search）和 AI 工具集成（MCP）的研究平台。</p>
 
 <p>最值得记住的一句话：</p>
-<p>Consensus 不是搜索引擎，而是证据聚合器——它告诉你的不是"有哪些论文"，而是"学界对这个问题怎么看"。</p>
+
+<p><strong>Consensus 不是搜索引擎，而是证据聚合器——它告诉你的不是"有哪些论文"，而是"学界对这个问题怎么看"。并且，它的关键结论指向一篇篇真实存在的论文——但你仍需要自己去读、去判断。</strong></p>
+
+<p>---</p>
+
+<h3>参考资料</h3>
+
+<li><a href="https://help.consensus.app/en/articles/9922673-how-consensus-works">Consensus Help Center: How Consensus Works</a></li>
+<li><a href="https://help.consensus.app/en/articles/11954907-consensus-product-changelog">Consensus Product Changelog</a></li>
+<li><a href="https://consensus.app/home/features/research-agent/">Consensus Blog: Research Agent</a></li>
+<li><a href="https://consensus.app/home/mcp/">Consensus MCP Integration</a></li>
+<li><a href="https://consensus.app/home/blog/30m-in-new-funding-to-reach-the-next-10m-researchers/">Consensus Blog: $30M Fundraise</a></li>
 
 
         </div>

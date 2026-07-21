@@ -153,15 +153,23 @@ def parse_research(filepath):
     article_date = date_match.group(1) if date_match else ""
 
     # Get first ~150 chars as excerpt
-    excerpt = content[:200].strip().replace("\n", " ")
+    # Look for explicit description paragraph, fallback to first meaningful paragraph
+    desc_match = re.search(r'^[^#\n].{0,300}(?:。|\.|\n\n)', content, re.MULTILINE)
+    if desc_match:
+        excerpt = desc_match.group(0).strip().replace("\n", " ")
+    else:
+        excerpt = content[:300].strip().replace("\n", " ")
     # strip markdown formatting
     excerpt = re.sub(r'\*\*(.+?)\*\*', r'\1', excerpt)
     excerpt = re.sub(r'#+\s*', '', excerpt)
     excerpt = re.sub(r'\s+', ' ', excerpt).strip()
-    # truncate at the first proper sentence
-    excerpt = excerpt.split("。")[0] + "。"
-    if len(excerpt) > 180:
-        excerpt = excerpt[:177] + "..."
+    # truncate at the first proper sentence or to 200 chars
+    if len(excerpt) > 200:
+        sentences = re.split(r'([。！？])', excerpt[:200])
+        if len(sentences) > 1:
+            excerpt = ''.join(sentences[:2]).rstrip()
+        else:
+            excerpt = excerpt[:197] + "..."
 
     return {
         "title": title,

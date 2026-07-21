@@ -72,7 +72,7 @@ Zotero Integration 是核心。Pandoc Reference List 只有在写论文输出时
 
 ## 三、文献笔记模板
 
-下面这份文献笔记模板是我自用的，放在 `~/Desktop/Liu-Wiki/_templates/literature_note_template.md`，核心目标是把 Zotero 里的元数据和 PDF 标注一次性落到 Obsidian 里，同时保留后续追加标注的能力。
+下面这份文献笔记模板是本人自用，核心目标是把 Zotero 里的元数据和 PDF 标注一次性落到 Obsidian 里，同时保留后续追加标注的能力。
 
 ```markdown
 ---

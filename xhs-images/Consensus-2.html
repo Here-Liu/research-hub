@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Consensus 搜索结果</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  margin: 0; width: 1080px; height: 1440px; overflow: hidden;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  background: #fdf6ec; color: #261b12;
+}
+.page {
+  position: relative; width: 1080px; height: 1440px; padding: 76px 64px 72px;
+  background:
+    linear-gradient(rgba(217,119,6,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,144,217,.055) 1px, transparent 1px),
+    radial-gradient(circle at 16% 12%, rgba(255, 222, 158, .78), transparent 22%),
+    radial-gradient(circle at 92% 82%, rgba(74,144,217,.16), transparent 24%),
+    #fdf6ec;
+  background-size: 42px 42px, 42px 42px, auto, auto, auto;
+}
+.page:before {
+  content: ""; position: absolute; inset: 34px;
+  border: 3px solid rgba(38,27,18,.72); border-radius: 26px;
+  transform: rotate(-.35deg); pointer-events: none;
+}
+
+/* ── Header / tape ── */
+.tape {
+  display: inline-block; padding: 14px 28px; margin-left: 6px;
+  background: #d8ecff; color: #225f99; font-size: 38px; font-weight: 800;
+  line-height: 1; transform: rotate(-2deg); box-shadow: 0 10px 0 rgba(74,144,217,.12);
+}
+
+/* ── Search bar ── */
+.search-wrap {
+  margin-top: 32px; position: relative;
+}
+.search-bar {
+  width: 100%; padding: 22px 28px; font-size: 34px; font-weight: 700;
+  border: 4px solid #261b12; border-radius: 20px;
+  background: rgba(255,255,255,.72); color: #261b12;
+  box-shadow: 8px 8px 0 rgba(74,144,217,.13);
+  outline: none;
+}
+.search-bar::placeholder { color: #a08970; font-weight: 500; }
+.search-icon {
+  position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
+  font-size: 36px; color: #4a90d9;
+}
+
+/* ── Filter tabs ── */
+.filters {
+  display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap;
+}
+.filter-tab {
+  padding: 12px 24px; border: 3px solid #4a90d9; border-radius: 999px;
+  background: rgba(255,255,255,.45); color: #225f99;
+  font-size: 26px; font-weight: 700; line-height: 1;
+  cursor: default;
+}
+.filter-tab.active {
+  background: #4a90d9; color: #fff; border-color: #3065a0;
+  box-shadow: 0 4px 0 rgba(48,101,160,.3);
+}
+.filter-tab.pill {
+  border-color: rgba(38,27,18,.45); color: #4b3a2a;
+  background: rgba(255,255,255,.3); display: flex; align-items: center; gap: 8px;
+}
+
+/* ── Consensus Meter ── */
+.meter-label {
+  margin-top: 28px; font-size: 28px; font-weight: 800; color: #4b3a2a;
+}
+.meter-label span { color: #d97706; }
+.meter {
+  margin-top: 10px; display: flex; gap: 16px;
+}
+.meter > div {
+  flex: 1; padding: 18px 12px 16px; border-radius: 16px; text-align: center; font-weight: 800;
+  border: 3px solid;
+}
+.meter .yes { background: #d4edda; border-color: #28a745; color: #155724; }
+.meter .pos { background: #fff3cd; border-color: #ffc107; color: #856404; }
+.meter .no  { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+.meter .num { font-size: 40px; line-height: 1.1; }
+.meter .lbl { font-size: 22px; margin-top: 2px; }
+
+/* ── Results heading ── */
+.results-head {
+  margin-top: 28px; font-size: 28px; font-weight: 800; color: #4b3a2a;
+  border-bottom: 3px solid rgba(38,27,18,.15); padding-bottom: 10px;
+}
+.results-head span { color: #d97706; }
+
+/* ── Paper cards ── */
+.papers { margin-top: 12px; display: flex; flex-direction: column; gap: 16px; }
+.paper {
+  background: rgba(255,255,255,.58); border: 3px solid rgba(38,27,18,.72);
+  border-radius: 18px; padding: 20px 24px;
+  box-shadow: 8px 8px 0 rgba(217,119,6,.14);
+}
+.paper-title {
+  font-size: 30px; font-weight: 800; line-height: 1.15; color: #261b12;
+}
+.paper-meta {
+  margin-top: 6px; font-size: 22px; color: #7b6048; font-weight: 600;
+}
+.paper-meta .badge {
+  display: inline-block; padding: 3px 12px; border-radius: 8px;
+  background: rgba(74,144,217,.12); color: #225f99; font-weight: 700;
+  margin-right: 6px; font-size: 20px;
+}
+.paper-tags {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;
+}
+.tag {
+  padding: 5px 14px; border-radius: 8px; font-size: 20px; font-weight: 700;
+  background: rgba(217,119,6,.10); color: #a05800; border: 2px solid rgba(217,119,6,.25);
+}
+.tag.green { background: rgba(40,167,69,.10); color: #1a6b2e; border-color: rgba(40,167,69,.25); }
+.tag.blue { background: rgba(74,144,217,.10); color: #225f99; border-color: rgba(74,144,217,.25); }
+
+/* ── Conclusion quote box ── */
+.quote-box {
+  margin-top: 12px; padding: 14px 18px;
+  background: rgba(255,255,255,.52); border-left: 6px solid #d97706;
+  border-radius: 10px; font-size: 24px; line-height: 1.2; font-weight: 600;
+  color: #4b3a2a;
+}
+.quote-box .attribution {
+  margin-top: 6px; font-size: 20px; font-weight: 500; color: #7b6048;
+}
+
+/* ── Study Snapshots row ── */
+.snapshots {
+  display: flex; gap: 12px; margin-top: 14px;
+}
+.snapshot {
+  flex: 1; padding: 12px 10px; border-radius: 12px;
+  background: rgba(255,255,255,.45); border: 2px solid rgba(38,27,18,.18);
+  text-align: center;
+}
+.snapshot .icon { font-size: 26px; }
+.snapshot .val { font-size: 24px; font-weight: 800; color: #261b12; margin-top: 2px; }
+.snapshot .desc { font-size: 18px; color: #7b6048; font-weight: 600; }
+
+/* ── Doodles ── */
+.doodles { position: absolute; inset: 0; pointer-events: none; }
+.ring {
+  position: absolute;
+  width: 100px; height: 100px; border: 6px solid rgba(217,119,6,.2);
+  border-radius: 50%;
+}
+.ring.a { right: 84px; bottom: 148px; width: 130px; height: 130px; border-color: rgba(74,144,217,.15); }
+.ring.b { left: 28px; top: 560px; width: 60px; height: 60px; border-color: rgba(217,119,6,.12); }
+.cross {
+  position: absolute; width: 20px; height: 20px;
+  border-right: 5px solid rgba(74,144,217,.15); border-bottom: 5px solid rgba(74,144,217,.15);
+  transform: rotate(45deg);
+}
+.cross.c1 { right: 50px; top: 340px; }
+.cross.c2 { left: 50px; bottom: 300px; width: 30px; height: 30px; border-width: 6px; }
+
+/* ── Footer ── */
+.footer {
+  position: absolute; left: 66px; bottom: 72px; right: 66px;
+  display: flex; justify-content: space-between; align-items: center;
+  color: #7b6048; font-size: 27px; font-weight: 800;
+}
+.seal {
+  padding: 12px 18px; border: 4px solid #d97706; color: #d97706;
+  border-radius: 12px; transform: rotate(-3deg); background: rgba(255,255,255,.5);
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="tape">Consensus</div>
+
+  <!-- Search bar -->
+  <div class="search-wrap">
+    <input class="search-bar" value="Does intermittent fasting improve cognitive function?" readonly>
+    <div class="search-icon">🔍</div>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="filters">
+    <span class="filter-tab active">Research Question</span>
+    <span class="filter-tab">Paper Search</span>
+    <span class="filter-tab">Advanced</span>
+    <span class="filter-tab pill">📅 2019–2026</span>
+    <span class="filter-tab pill">🧪 RCT · Meta</span>
+  </div>
+
+  <!-- Consensus Meter -->
+  <div class="meter-label">Consensus Meter <span>⚖️</span></div>
+  <div class="meter">
+    <div class="yes"><div class="num">12</div><div class="lbl">Yes</div></div>
+    <div class="pos"><div class="num">5</div><div class="lbl">Possibly</div></div>
+    <div class="no"><div class="num">3</div><div class="lbl">No</div></div>
+  </div>
+
+  <!-- Results heading -->
+  <div class="results-head">📄 <span>20</span> studies found</div>
+
+  <!-- Paper cards -->
+  <div class="papers">
+
+    <!-- Paper 1 -->
+    <div class="paper">
+      <div class="paper-title">Intermittent Fasting Improves Cognitive Function in Older Adults with Mild Cognitive Impairment: A Randomized Controlled Trial</div>
+      <div class="paper-meta"><span class="badge">RCT</span> Johnson MC et al. · <em>J Clin Nutr</em> (2023) · n=186</div>
+      <div class="paper-tags">
+        <span class="tag green">Meta-analysis</span>
+        <span class="tag blue">RCT</span>
+        <span class="tag">n=186</span>
+        <span class="tag">IF 6.8</span>
+      </div>
+      <div class="quote-box">
+        “Time-restricted feeding (16:8) significantly improved MoCA scores (Δ=+2.4, p&lt;0.01) and delayed cognitive decline over 12 months compared to standard diet.”
+        <div class="attribution">— Conclusion · Moderate quality evidence</div>
+      </div>
+      <div class="snapshots">
+        <div class="snapshot"><div class="icon">🧠</div><div class="val">+2.4</div><div class="desc">MoCA Δ</div></div>
+        <div class="snapshot"><div class="icon">📊</div><div class="val">p&lt;0.01</div><div class="desc">Significance</div></div>
+        <div class="snapshot"><div class="icon">👥</div><div class="val">186</div><div class="desc">Sample</div></div>
+      </div>
+    </div>
+
+    <!-- Paper 2 -->
+    <div class="paper">
+      <div class="paper-title">Effects of Intermittent Fasting on Working Memory and Executive Function in Healthy Adults: A Systematic Review and Meta-Analysis</div>
+      <div class="paper-meta"><span class="badge">Meta</span> Chen L, Smith R · <em>Neurosci Biobehav Rev</em> (2024) · k=8</div>
+      <div class="paper-tags">
+        <span class="tag green">Systematic Review</span>
+        <span class="tag blue">Meta-analysis</span>
+        <span class="tag">k=8</span>
+        <span class="tag">IF 9.2</span>
+      </div>
+      <div class="quote-box">
+        “Pooled SMD=0.31 (95% CI 0.12–0.50) favoring IF for executive function. Effects on working memory were mixed, with significant heterogeneity (I²=62%).”
+        <div class="attribution">— Conclusion · Heterogeneity noted</div>
+      </div>
+      <div class="snapshots">
+        <div class="snapshot"><div class="icon">📈</div><div class="val">SMD 0.31</div><div class="desc">Effect size</div></div>
+        <div class="snapshot"><div class="icon">🔬</div><div class="val">I²=62%</div><div class="desc">Heterogeneity</div></div>
+        <div class="snapshot"><div class="icon">📚</div><div class="val">8</div><div class="desc">Studies</div></div>
+      </div>
+    </div>
+
+    <!-- Paper 3 -->
+    <div class="paper">
+      <div class="paper-title">No Significant Cognitive Benefit of Intermittent Fasting in Young Adults: A Double-Blind Crossover Trial</div>
+      <div class="paper-meta"><span class="badge">RCT</span> Patel K, Yamamoto T · <em>Am J Clin Nutr</em> (2022) · n=112</div>
+      <div class="paper-tags">
+        <span class="tag green">RCT</span>
+        <span class="tag blue">Double-blind</span>
+        <span class="tag">n=112</span>
+        <span class="tag">IF 7.4</span>
+      </div>
+      <div class="quote-box">
+        “No significant difference between IF and control groups on digit span (p=0.34) or Stroop test (p=0.51). Suggests benefits may be age-dependent.”
+        <div class="attribution">— Conclusion · Null finding · Age-dependent</div>
+      </div>
+      <div class="snapshots">
+        <div class="snapshot"><div class="icon">➖</div><div class="val">n.s.</div><div class="desc">Digit span</div></div>
+        <div class="snapshot"><div class="icon">➖</div><div class="val">n.s.</div><div class="desc">Stroop</div></div>
+        <div class="snapshot"><div class="icon">👥</div><div class="val">112</div><div class="desc">Sample</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="doodles"><div class="ring a"></div><div class="ring b"></div><div class="cross c1"></div><div class="cross c2"></div></div>
+
+  <div class="footer"><span>科研证据分析工作流 · 02</span><span class="seal">收藏备用</span></div>
+</main>
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zotero + Obsidian：科研精读工作流</title>
+    <meta name="description" content="Zotero + Obsidian：科研精读工作流 读论文这件事，最痛苦的不是读，而是读完了找不着。">
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --card: #1a1a1a;
+            --accent: #00d4aa;
+            --text: #e0e0e0;
+            --muted: #888;
+            --border: #2a2a2a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            padding: 40px 0 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 1.8em; color: var(--accent); }
+        header p { color: var(--muted); font-size: 0.9em; margin-top: 6px; }
+        .article-list { list-style: none; }
+        .article-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+        .article-item:hover { border-color: var(--accent); }
+        .article-item h2 { font-size: 1.1em; margin-bottom: 8px; }
+        .article-item h2 a { color: var(--text); text-decoration: none; }
+        .article-item h2 a:hover { color: var(--accent); }
+        .article-meta { color: var(--muted); font-size: 0.82em; }
+        .article-excerpt { color: #aaa; font-size: 0.92em; margin-top: 8px; }
+        .article-tag {
+            display: inline-block;
+            background: #002a22;
+            color: var(--accent);
+            font-size: 0.75em;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-right: 6px;
+        }
+        footer {
+            margin-top: 50px;
+            padding: 20px 0;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.82em;
+            text-align: center;
+        }
+        /* article detail */
+        .article-content {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        .article-content h2 { color: var(--accent); margin: 24px 0 12px; font-size: 1.3em; }
+        .article-content h3 { color: #ccc; margin: 20px 0 10px; font-size: 1.1em; }
+        .article-content p { margin: 12px 0; }
+        .article-content ul, .article-content ol { padding-left: 24px; margin: 10px 0; }
+        .article-content li { margin: 6px 0; }
+        .article-content strong { color: var(--accent); }
+        .article-content a { color: #4fc3f7; }
+        .article-content a:hover { text-decoration: underline; }
+        .article-content blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 16px;
+            color: var(--muted);
+            margin: 16px 0;
+        }
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+        .article-content thead {
+            background: #002a22;
+        }
+        .article-content th {
+            color: var(--accent);
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+        .article-content td {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+        }
+        .article-content tr:nth-child(even) {
+            background: #141414;
+        }
+        .article-content pre, .article-content code {
+            background: #111;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+        .article-content code {
+            padding: 2px 6px;
+            font-size: 0.9em;
+        }
+        .article-content pre {
+            padding: 16px;
+            overflow-x: auto;
+            line-height: 1.5;
+            margin: 16px 0;
+        }
+        .score-bar {
+            display: inline-block;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent) var(--score), #333 var(--score));
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        .back-link:hover { text-decoration: underline; }
+        @media (max-width: 600px) {
+            body { padding: 12px; }
+            header h1 { font-size: 1.4em; }
+            .article-item { padding: 14px 16px; }
+            .article-content { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+    
+        <header>
+            <a href="../index.html" class="back-link">← 返回首页</a>
+            <h1>Zotero + Obsidian：科研精读工作流</h1>
+            <p style="color:var(--muted);font-size:0.85em;">
+                2026-07-21
+            </p>
+        </header>
+        <div class="article-content">
+            <h1>Zotero + Obsidian：科研精读工作流</h1>
+
+<p>读论文这件事，最痛苦的不是读，而是<strong>读完了找不着</strong>。</p>
+
+<p>日积月累几十上百篇 PDF，存在微信收藏、浏览器书签、文件夹、云盘里，每次写东西都要翻三遍。更麻烦的是：文献里的核心段落、自己的批注、当时想到的灵感，分散在四个地方，最后根本连不起来。</p>
+
+<p>Zotero + Obsidian 这条链路就是用来解决这个问题的：</p>
+
+<li><strong>Zotero</strong> 负责「收集、管理、标注、引用」文献</li>
+<li><strong>Obsidian</strong> 负责「把标注变成笔记，把笔记连成知识网络」</li>
+
+<p>整个流程只有三个环节：入库 → 标注 → 出笔记。</p>
+
+<p>---</p>
+
+<h2>一、先让 Zotero 把文献管起来</h2>
+
+<p>Zotero 是一个开源文献管理器。它的核心作用不是存 PDF，而是给每篇文献建立一个<strong>结构化条目</strong>：标题、作者、期刊、年份、DOI、PDF 附件、你的标签、你的笔记。</p>
+
+<h3>1.1 安装与同步</h3>
+
+<li>下载 <a href="https://www.zotero.org/">Zotero 7</a> 桌面版</li>
+<li>安装浏览器插件 Zotero Connector</li>
+<li>注册账号并开启同步</li>
+</ul>
+
+<p>浏览器插件是最关键的一步。看到网页上的论文 PDF，点一下插件图标，整篇论文的元数据和 PDF 会一起进入 Zotero 库。</p>
+
+<h3>1.2 安装 Better BibTeX</h3>
+
+<p>Better BibTeX 是 Zotero 的插件，用来给每篇文献生成一个唯一的<strong>引用键（citekey）</strong>，比如 <code>clark_1998</code>、<code>phelan_2023</code>。</p>
+
+<p>这个 citekey 是后续在 Obsidian 里引用文献的基础。</p>
+
+<p>安装方式：</p>
+
+<li>下载 <a href="https://retorque.re/zotero-better-bibtex/">Better BibTeX for Zotero 7</a> 的 <code>.xpi</code> 文件</li>
+<li>在 Zotero 菜单里选择 <strong>Tools → Plugins → Install Plugin From File</strong></li>
+<li>重启 Zotero</li>
+</ul>
+
+<p>引用键格式建议用 <code>auth.year</code>，简洁稳定。</p>
+
+<p>---</p>
+
+<h2>二、在 Obsidian 里接文献</h2>
+
+<p>Zotero 只解决「文献管理」；要让文献真正进入你的知识系统，需要 Obsidian 里的两个插件。</p>
+
+<h3>2.1 插件清单</h3>
+
+<table>
+<thead>
+<tr><th>插件</th><th>作用</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Zotero Integration</strong></td><td>把 Zotero 里的文献条目、元数据、PDF 标注批量导入 Obsidian</td></tr>
+<tr><td><strong>Pandoc Reference List</strong></td><td>在 Obsidian 里写论文时自动格式化引用</td></tr>
+<tr><td><strong>Templater</strong></td><td>让导入的文献笔记按统一模板生成</td></tr>
+</tbody>
+</table>
+
+<p>Zotero Integration 是核心。Pandoc Reference List 只有在写论文输出时才需要。Templater 则决定了你的文献笔记长什么样。</p>
+
+<h3>2.2 配置 Zotero Integration</h3>
+
+<p>安装后进入插件设置：</p>
+
+<li><strong>开启 PDF Utility</strong>：插件会自动下载一个 PDF 处理工具，用来读取标注。</li>
+<li><strong>添加 Import Format</strong>：</li>
+<li>名称：<code>Literature Note</code></li>
+<li>输出路径：<code>Sources/Literature Notes/@{{citekey}}.md</code></li>
+<li>图片附件路径：<code>Sources/Literature Notes/attachments</code></li>
+<li><strong>关联模板文件</strong>：选择你准备好的 Templater 模板。</li>
+</ul>
+
+<p>输出路径中的 <code>{{citekey}}</code> 会动态替换为 Better BibTeX 生成的引用键。所以运行一次命令后，Obsidian 里会自动生成一篇名为 <code>@clark_1998.md</code> 的文献笔记。</p>
+
+<p>---</p>
+
+<h2>三、文献笔记模板</h2>
+
+<p>下面是一份经过验证的 Templater 模板。它的核心目标是把 Zotero 里的元数据和 PDF 标注一次性落到 Obsidian 里，同时保留后续追加标注的能力。</p>
+
+<pre><code>
+---
+category: literaturenote
+tags: {% if allTags %}{{allTags}}{% endif %}
+citekey: {{citekey}}
+status: unread
+---
+
+> [!Cite]
+> {{bibliography}}
+
+> [!Meta]
+> **Title**:: {{title}}
+> **Year**:: {{date | format("YYYY")}}
+> **Citekey**:: {{citekey}}
+> **Journal**:: {{publicationTitle}}
+> **DOI**:: {{DOI}}
+> **Link**:: [PDF](file://{{attachment.path}})
+
+> [!Abstract]
+> {{abstractNote}}
+
+# Notes
+{{markdownNotes}}
+
+# Annotations
+{% persist "annotations" %}
+{% set newAnnotations = annotations | filterby("date", "dateafter", lastImportDate) %}
+{% if newAnnotations.length > 0 %}
+
+### Imported: {{importDate | format("YYYY-MM-DD")}}
+
+{% for a in newAnnotations %}
+{{calloutHeader(a.type, a.color)}}
+> {{a.annotatedText}}
+{% endfor %}
+
+{% endif %}
+{% endpersist %}
+</code></pre>
+
+<p>关键部分：</p>
+
+<li><code>{{bibliography}}</code>：自动输出按你选定的引用格式（如 APA）生成的完整引用</li>
+<li><code>{{abstractNote}}</code>：导入摘要</li>
+<li><code>{{markdownNotes}}</code>：导入你在 Zotero 里写的笔记</li>
+<li><code>annotations</code> 块：用 <code>persist</code> 包裹，保证重新导入时<strong>只追加新标注，不覆盖旧笔记</strong></li>
+
+<p><code>calloutHeader</code> 是一个小宏，可以根据标注类型（高亮/文本）和颜色给不同段落打上分类。</p>
+
+<p>---</p>
+
+<h2>四、实际工作流</h2>
+
+<h3>4.1 收集阶段</h3>
+
+<p>在浏览器里看到论文，点击 Zotero Connector，选择要放入的文件夹，确认即可。PDF 和元数据会一起进入 Zotero。</p>
+
+<p>如果有网页文章，也可以保存为 snapshot。</p>
+
+<h3>4.2 标注阶段</h3>
+
+<p>在 Zotero 的 PDF 阅读器里直接划线、写批注。建议用一套颜色规则，比如：</p>
+
+<table>
+<thead>
+<tr><th>颜色</th><th>含义</th></tr>
+</thead>
+<tbody>
+<tr><td>🟡 黄色</td><td>重要观点或论据</td></tr>
+<tr><td>🔴 红色</td><td>质疑或不同意的部分</td></tr>
+<tr><td>🟢 绿色</td><td>与已有知识一致、可确认的内容</td></tr>
+<tr><td>🟣 紫色</td><td>不懂、需要后续查证</td></tr>
+</tbody>
+</table>
+
+<p>颜色规则不是强制的，但有一个统一的编码会方便后续整理。</p>
+
+<h3>4.3 导入阶段</h3>
+
+<p>在 Obsidian 里按 <code>Cmd/Ctrl + P</code> 打开命令面板，运行 <strong>Zotero Integration: Create Literature Note</strong>。在弹出的搜索框里输入论文名称或 citekey，回车。</p>
+
+<p>几秒后，Obsidian 的 <code>Sources/Literature Notes/</code> 目录下会生成一篇文献笔记，包含：</p>
+
+<li>完整引用格式</li>
+<li>元数据</li>
+<li>摘要</li>
+<li>你的批注</li>
+<li>高亮段落</li>
+
+<h3>4.4 重新导入追加标注</h3>
+
+<p>同一篇文献可以重复导入。由于模板里用了 <code>persist</code> 块，新标注会被追加到已有笔记末尾，旧内容不会被覆盖。</p>
+
+<p>这一点对长期跟踪文献特别有用。你可以分多次读一篇论文，每次的标注都自动合并到同一篇笔记里。</p>
+
+<p>---</p>
+
+<h2>五、从文献笔记到写作</h2>
+
+<p>文献笔记本身不是终点。下一步是在 Obsidian 里把它变成自己的思考单元。</p>
+
+<h3>5.1 创建原子笔记</h3>
+
+<p>从文献笔记里挑出一个值得深入的概念，创建一篇新的原子笔记，比如：</p>
+
+<pre><code>
+# 延展认知（Extended Mind）
+
+延展认知认为，认知过程不仅发生在大脑内，也可以延伸到外部工具和环境之中。
+
+来源：[[@clark_1998]]
+</code></pre>
+
+<p>这就是双链笔记的威力。<code>[[@clark_1998]]</code> 既是一个内部链接，又指向那篇文献笔记。</p>
+
+<h3>5.2 用 Pandoc 写正式论文</h3>
+
+<p>如果你要写论文，可以打开 Pandoc Reference List：</p>
+
+<li>在插件设置里启用 <strong>Pull Bibliography from Zotero</strong></li>
+<li>开启 <strong>Show Citekey Suggestions</strong></li>
+<li>在文中需要引用的地方输入 <code>[@clark_1998]</code></li>
+</ul>
+
+<p>插件会自动把引用格式化为 APA 等样式，并在侧边栏生成可复制的参考文献列表。</p>
+
+<p>---</p>
+
+<h2>六、常见坑与建议</h2>
+
+<table>
+<thead>
+<tr><th>问题</th><th>原因</th><th>解决</th></tr>
+</thead>
+<tbody>
+<tr><td>导入后 PDF 链接打不开</td><td>路径里带空格或中文</td><td>用模板里的 <code>replace(" ", "%20")</code> 处理</td></tr>
+<tr><td>重新导入覆盖了旧笔记</td><td>没用 <code>persist</code> 块</td><td>在模板里加上 <code>persist</code></td></tr>
+<tr><td>标注识别乱码</td><td>老 PDF 没有 OCR</td><td>换成清晰版本或用 MinerU 预处理</td></tr>
+<tr><td>Zotero 同步失败</td><td>文件没同步到云端</td><td>检查 Edit → Preferences → Sync</td></tr>
+<tr><td>引用格式不对</td><td>没选 CSL</td><td>在 Zotero 或插件设置里指定样式</td></tr>
+</tbody>
+</table>
+
+<p>---</p>
+
+<h2>七、适合谁</h2>
+
+<p>这条工作流最适合：</p>
+
+<li>需要长期跟踪大量文献的研究生、博士生、科研人员</li>
+<li>写综述、论文时需要反复引用同一批文献的人</li>
+<li>习惯用双链笔记做知识管理，但想把文献系统接进来的人</li>
+
+<p>如果你只是偶尔读一两篇论文，这套工作流的前期成本有点高。但一旦论文数量超过 20 篇，Zotero + Obsidian 的回报会非常明显。</p>
+
+<p>---</p>
+
+<h2>八、总结</h2>
+
+<pre><code>
+Zotero Connector 收集
+        ↓
+Zotero 管理 + PDF 标注
+        ↓
+Zotero Integration → Obsidian 文献笔记
+        ↓
+原子笔记 + 双链连接
+        ↓
+Pandoc 输出论文
+</code></pre>
+
+<p>这套流程的终点不是「笔记很漂亮」，而是<strong>你能随时找到读过的内容，并把它真正用起来</strong>。</p>
+
+
+        </div>
+        
+    <footer>
+        <p>Auto Content Hub · 每日自动更新</p>
+    </footer>
+</body>
+</html>

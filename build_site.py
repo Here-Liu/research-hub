@@ -18,6 +18,7 @@ BASE_DIR = SCRIPT_DIR
 RESEARCH_DIR = BASE_DIR / "research"
 OUTPUT_DIR = BASE_DIR / "public"
 TEMPLATE = BASE_DIR / "templates" / "base.html"
+README_PATH = BASE_DIR / "README.md"
 SITE_TITLE = "Research Hub"
 SITE_DESC = "AI 自动生成的研究效率工具指南"
 
@@ -242,6 +243,9 @@ def build_site():
         f.write(index_html)
     print(f"Index generated: {len(articles)} articles")
 
+    # --- Generate README ---
+    generate_readme(articles)
+
     # --- Build article detail pages ---
     articles_dir = OUTPUT_DIR / "articles"
     ensure(articles_dir)
@@ -271,6 +275,24 @@ def build_site():
 
     print(f"Site built: {OUTPUT_DIR}")
     return True
+
+def generate_readme(articles):
+    """Generate README.md with article list."""
+    lines = [
+        "# Research Hub",
+        "",
+        "个人研究效率工具指南。文章源文件在 `research/` 目录，push 到 main 后 `build_site.py` 构建并部署到 GitHub Pages。",
+        "",
+        "## 文章目录",
+        "",
+    ]
+    for a in articles:
+        lines.append(f"- **{a['title']}** ({a['date']})")
+        lines.append(f"  {a['excerpt']}")
+        lines.append(f"  https://here-liu.github.io/research-hub/articles/{a['slug']}.html")
+        lines.append("")
+    README_PATH.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+    print(f"README generated: {README_PATH}")
 
 if __name__ == "__main__":
     build_site()

@@ -236,3 +236,10 @@ Pandoc 输出论文
 ```
 
 这套流程的终点不是「笔记很漂亮」，而是**你能随时找到读过的内容，并把它真正用起来**。
+
+---
+
+## 参考
+
+- [How To Use Zotero In Obsidian To Simplify Research 📚 + Research Rabbit](https://www.youtube.com/watch?v=ScXGpZRZ7Ck&t=7s) — Wanderloots 的完整视频教程，涵盖 Zotero、Obsidian、Zotero Integration 模板和 Research Rabbit 的联动
+- [An Updated Academic Workflow: Zotero & Obsidian](https://medium.com/@alexandraphelan/an-updated-academic-workflow-zotero-obsidian-cffef080addd) — Alexandra Phelan 的书面版教程，提供了可直接复制的 Templater 文献笔记模板

@@ -236,45 +236,92 @@
 
 <h2>三、文献笔记模板</h2>
 
-<p>下面是一份经过验证的 Templater 模板。它的核心目标是把 Zotero 里的元数据和 PDF 标注一次性落到 Obsidian 里，同时保留后续追加标注的能力。</p>
+<p>下面这份文献笔记模板是我自用的，放在 <code>~/Desktop/Liu-Wiki/_templates/literature_note_template.md</code>，核心目标是把 Zotero 里的元数据和 PDF 标注一次性落到 Obsidian 里，同时保留后续追加标注的能力。</p>
 
 <pre><code>
 ---
-category: literaturenote
-tags: {% if allTags %}{{allTags}}{% endif %}
-citekey: {{citekey}}
-status: unread
+Zotero Tags: "{% if allTags %}{{allTags}}{% endif %}"
+citekey: "{{citekey}}"
+Type: Literature Note
+updated:
+  - '{{importDate | format("YYYY-MM-DD, HH:mm")}}'
+aliases: []
+sources: []
 ---
 
-> [!Cite]
+> [!Cite] Citation
 > {{bibliography}}
 
-> [!Meta]
+> [!Synth] Synthesis
+> **Contribution**::
+>
+> **Related**:: {% for relation in relations | selectattr("citekey") %} [[@{{relation.citekey}}]]{% if not loop.last %}, {% endif %}{% endfor %}
+
+> [!md] Metadata
+> {% for type, creators in creators | groupby("creatorType") %}
+> {% for creator in creators %}
+> **{{"First " if loop.first}}{{type | capitalize}}**:: {% if creator.name %}{{creator.name}}{% else %}{{creator.lastName}}, {{creator.firstName}}{% endif %}
+> {% endfor %}
+> {% endfor %}
 > **Title**:: {{title}}
 > **Year**:: {{date | format("YYYY")}}
-> **Citekey**:: {{citekey}}
-> **Journal**:: {{publicationTitle}}
-> **DOI**:: {{DOI}}
-> **Link**:: [PDF](file://{{attachment.path}})
+> **Citekey**:: {{citekey}}{% if itemType %}
+> **itemType**:: {{itemType}}{% endif %}{% if itemType == "journalArticle" %}
+> **Journal**:: *{{publicationTitle}}*{% endif %}{% if volume %}
+> **Volume**:: {{volume}}{% endif %}{% if issue %}
+> **Issue**:: {{issue}}{% endif %}{% if itemType == "bookSection" %}
+> **Book**:: {{publicationTitle}}{% endif %}{% if publisher %}
+> **Publisher**:: {{publisher}}{% endif %}{% if place %}
+> **Location**:: {{place}}{% endif %}{% if pages %}
+> **Pages**:: {{pages}}{% endif %}{% if DOI %}
+> **DOI**:: {{DOI}}{% endif %}{% if ISBN %}
+> **ISBN**:: {{ISBN}}{% endif %}
 
-> [!Abstract]
+> [!LINK] Link
+{%- for attachment in attachments | filterby("path", "endswith", ".pdf") %}
+> [{{attachment.title}}](file://{{attachment.path | replace(" ", "%20")}})
+{%- endfor %}
+
+> [!Abstract] Abstract
+{%- if abstractNote %}
 > {{abstractNote}}
+{%- endif %}
 
 # Notes
+
+{%- if markdownNotes %}
 {{markdownNotes}}
+{%- endif %}
 
 # Annotations
+
+{%- macro calloutHeader(type, color) -%}
+{%- if type == "highlight" -%}
+<mark style="background-color: {{color}}">Quote</mark>
+{%- endif -%}
+
+{%- if type == "text" -%}
+Note
+{%- endif -%}
+{%- endmacro -%}
+
 {% persist "annotations" %}
 {% set newAnnotations = annotations | filterby("date", "dateafter", lastImportDate) %}
 {% if newAnnotations.length > 0 %}
 
-### Imported: {{importDate | format("YYYY-MM-DD")}}
+### Imported: {{importDate | format("YYYY-MM-DD h:mm a")}}
 
 {% for a in newAnnotations %}
 {{calloutHeader(a.type, a.color)}}
-> {{a.annotatedText}}
-{% endfor %}
 
+> {{a.annotatedText}}
+
+{% if a.comment %}
+>
+> **Note**:: {{a.comment}}
+{% endif %}
+
+{% endfor %}
 {% endif %}
 {% endpersist %}
 </code></pre>
@@ -285,8 +332,8 @@ status: unread
 <li><code>{{abstractNote}}</code>：导入摘要</li>
 <li><code>{{markdownNotes}}</code>：导入你在 Zotero 里写的笔记</li>
 <li><code>annotations</code> 块：用 <code>persist</code> 包裹，保证重新导入时<strong>只追加新标注，不覆盖旧笔记</strong></li>
-
-<p><code>calloutHeader</code> 是一个小宏，可以根据标注类型（高亮/文本）和颜色给不同段落打上分类。</p>
+<li><code>calloutHeader</code> 宏：根据标注类型（高亮/文本）和颜色给不同段落打分类标签</li>
+<li><code>updated</code> 字段：每次导入自动记录时间戳</li>
 
 <p>---</p>
 
